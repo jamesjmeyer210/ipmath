@@ -1,15 +1,20 @@
 use std::path::PathBuf;
 use std::str::FromStr;
 use clap::{Parser};
-use ipmath_core::net::IpAddress;
+use ipmath_cli::Encoding;
+use ipmath_core::net::{IpAddress};
 
 #[derive(Parser)]
 #[clap(name = "ipmath", author = "James Meyer")]
 struct Cli {
     #[arg(short, long, value_name = "IP ADDRESS")]
     convert: Option<String>,
+    #[arg(long)]
+    encoding_in: Option<Encoding>,
     #[arg(short, long, value_name = "FILE")]
-    out: Option<PathBuf>
+    out: Option<PathBuf>,
+    #[arg(long)]
+    encoding_out: Option<Encoding>,
 }
 
 fn main() {
