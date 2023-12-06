@@ -1,5 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-  "ipmath-core"
+  "ipmath-core",
+  "ipmath-cli"
 ]
