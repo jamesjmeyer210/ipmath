@@ -1,23 +1,21 @@
 use clap::ValueEnum;
-use ipmath_core::net::IpEncoding;
+use ipmath_core::net::IpFormat;
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-pub enum Encoding {
-    Int,
-    Binary,
-    Decimal,
-    Hex,
-    Base64
+pub enum Format {
+    Ipv4Int,
+    Ipv4Default,
+    Ipv6Int,
+    Ipv6Default,
 }
 
-impl Into<IpEncoding> for Encoding {
-    fn into(self) -> IpEncoding {
+impl Into<IpFormat> for Format {
+    fn into(self) -> IpFormat {
         match self {
-            Encoding::Int => IpEncoding::Int,
-            Encoding::Binary => IpEncoding::Binary,
-            Encoding::Decimal => IpEncoding::Decimal,
-            Encoding::Hex => IpEncoding::Hex,
-            Encoding::Base64 => IpEncoding::Base64,
+            Format::Ipv4Int => IpFormat::Ipv4Int,
+            Format::Ipv4Default => IpFormat::Ipv4Default,
+            Format::Ipv6Int => IpFormat::Ipv6Int,
+            Format::Ipv6Default => IpFormat::Ipv6Default,
         }
     }
 }

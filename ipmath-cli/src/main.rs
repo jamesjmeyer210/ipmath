@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 use std::str::FromStr;
 use clap::{Parser};
-use ipmath_cli::Encoding;
+use ipmath_cli::Format;
 use ipmath_core::net::{IpAddress};
 
 #[derive(Parser)]
@@ -10,11 +10,11 @@ struct Cli {
     #[arg(short, long, value_name = "IP ADDRESS")]
     convert: Option<String>,
     #[arg(long)]
-    encoding_in: Option<Encoding>,
+    format_in: Option<Format>,
     #[arg(short, long, value_name = "FILE")]
     out: Option<PathBuf>,
     #[arg(long)]
-    encoding_out: Option<Encoding>,
+    format_out: Option<Format>,
 }
 
 fn main() {
