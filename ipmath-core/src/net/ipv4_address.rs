@@ -1,10 +1,18 @@
 use std::fmt::{Display, Formatter, write};
-use std::net::{AddrParseError, Ipv4Addr};
+use std::net::{AddrParseError, Ipv4Addr, Ipv6Addr};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, PartialOrd)]
 pub struct Ipv4Address {
     _inner: Ipv4Addr
+}
+
+impl From<Ipv4Addr> for Ipv4Address {
+    fn from(value: Ipv4Addr) -> Self {
+        Self {
+            _inner: value
+        }
+    }
 }
 
 impl FromStr for Ipv4Address {

@@ -4,7 +4,7 @@ use crate::err::IpParseError;
 pub(crate) enum IpFormatResult {
     Ipv4Int(u32),
     Ipv4Default(Ipv4Addr),
-    Ipv6Int(u64),
+    Ipv6Int(u128),
     Ipv6Default(Ipv6Addr)
 }
 
@@ -14,8 +14,8 @@ impl <'a>TryFrom<&'a str> for IpFormatResult {
     fn try_from(value: &'a str) -> Result<Self, Self::Error> {
         let attempts: Vec<fn(&str) -> Result<IpFormatResult,IpParseError<'a>>> = vec![
             IpFormatResult::try_as_ipv4_default,
-            IpFormatResult::try_as_ipv4_int,
             IpFormatResult::try_as_ipv6_default,
+            IpFormatResult::try_as_ipv4_int,
             IpFormatResult::try_as_ipv6_int
         ];
 
@@ -40,7 +40,7 @@ impl IpFormatResult {
     }
 
     fn try_as_ipv6_int<'a>(s: &str) -> Result<IpFormatResult,IpParseError<'a>> {
-        s.parse::<u64>()
+        s.parse::<u128>()
             .map(|x|IpFormatResult::Ipv6Int(x))
             .map_err(|e|IpParseError::from(e))
     }
@@ -54,7 +54,7 @@ impl IpFormatResult {
 
 #[cfg(test)]
 mod test {
-    use crate::net::ip_format_result::IpFormatResult;
+    use super::IpFormatResult;
 
     #[test]
     fn try_from_returns_ok(){

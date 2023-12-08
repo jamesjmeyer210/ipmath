@@ -7,6 +7,22 @@ pub struct Ipv6Address {
     _inner: Ipv6Addr
 }
 
+impl From<Ipv6Addr> for Ipv6Address {
+    fn from(value: Ipv6Addr) -> Self {
+        Self {
+            _inner: value,
+        }
+    }
+}
+
+impl From<u128> for Ipv6Address {
+    fn from(value: u128) -> Self {
+        Self {
+            _inner: Ipv6Addr::from(value)
+        }
+    }
+}
+
 impl FromStr for Ipv6Address {
     type Err = AddrParseError;
 

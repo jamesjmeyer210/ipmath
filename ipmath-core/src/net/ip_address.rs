@@ -1,12 +1,23 @@
 use std::fmt::{Display, Formatter};
 use std::net::AddrParseError;
 use std::str::FromStr;
-use crate::net::{Ipv4Address, Ipv6Address};
+use crate::net::{IpFormatResult, Ipv4Address, Ipv6Address};
 
 #[derive(Debug, PartialEq, PartialOrd)]
 pub enum IpAddress {
     V4(Ipv4Address),
     V6(Ipv6Address),
+}
+
+impl From<IpFormatResult> for IpAddress {
+    fn from(value: IpFormatResult) -> Self {
+        match value {
+            IpFormatResult::Ipv4Default(x) => IpAddress::V4(Ipv4Address::from(x)),
+            IpFormatResult::Ipv4Int(x) => IpAddress::V4(Ipv4Address::from(x)),
+            IpFormatResult::Ipv6Default(x) => IpAddress::V6(Ipv6Address::from(x)),
+            IpFormatResult::Ipv6Int(x) => IpAddress::V6(Ipv6Address::from(x))
+        }
+    }
 }
 
 impl FromStr for IpAddress {
