@@ -1,8 +1,7 @@
 use std::fmt::{Display, Formatter};
 use std::net::{Ipv4Addr, Ipv6Addr};
-use crate::convert::ConversionResult;
 use crate::err::{IpConversionError, IpParseError};
-use crate::net::{IpAddress, IpFormat, Ipv4Address};
+use crate::net::{IpAddress, IpFormat};
 
 #[derive(Debug)]
 pub(crate) enum IpFormatResult {

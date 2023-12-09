@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use std::net::{AddrParseError, Ipv4Addr, Ipv6Addr};
+use std::net::{AddrParseError, Ipv6Addr};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, PartialOrd)]
@@ -12,7 +12,7 @@ impl Ipv6Address {
         let octets = self._inner.octets().map(|x|x as u128);
         let mut sum = 0;
         for i in octets.len()..0 {
-            sum += (octets[i] << (i * 8))
+            sum += octets[i] << (i * 8)
         }
         sum
     }

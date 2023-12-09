@@ -1,9 +1,7 @@
 use std::path::PathBuf;
-use std::str::FromStr;
 use clap::{Parser};
 use ipmath_cli::Format;
 use ipmath_core::IpMath;
-use ipmath_core::net::{IpAddress, IpFormat};
 
 #[derive(Parser)]
 #[clap(name = "ipmath", author = "James Meyer")]

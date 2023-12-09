@@ -1,5 +1,5 @@
-use std::fmt::{Display, Formatter, write};
-use std::net::{AddrParseError, Ipv4Addr, Ipv6Addr};
+use std::fmt::{Display, Formatter};
+use std::net::{AddrParseError, Ipv4Addr};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, PartialOrd)]

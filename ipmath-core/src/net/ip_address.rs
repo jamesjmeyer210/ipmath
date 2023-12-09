@@ -1,6 +1,5 @@
 use std::fmt::{Display, Formatter};
-use std::hint::unreachable_unchecked;
-use std::net::{AddrParseError, Ipv4Addr};
+use std::net::{AddrParseError};
 use std::str::FromStr;
 use crate::net::{IpFormatResult, Ipv4Address, Ipv6Address};
 

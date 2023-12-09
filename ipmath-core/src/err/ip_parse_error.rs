@@ -2,7 +2,6 @@ use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::net::AddrParseError;
 use std::num::ParseIntError;
-use crate::net::IpFormat;
 
 #[derive(Debug)]
 pub enum IpParseError<'a>
