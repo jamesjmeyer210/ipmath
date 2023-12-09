@@ -1,5 +1,5 @@
 use std::fmt::{Display, Formatter};
-use std::net::{AddrParseError, Ipv6Addr};
+use std::net::{AddrParseError, Ipv4Addr, Ipv6Addr};
 use std::str::FromStr;
 
 #[derive(Debug, PartialEq, PartialOrd)]
@@ -7,11 +7,28 @@ pub struct Ipv6Address {
     _inner: Ipv6Addr
 }
 
+impl Ipv6Address {
+    pub(crate) fn as_u128(&self) -> u128 {
+        let octets = self._inner.octets().map(|x|x as u128);
+        let mut sum = 0;
+        for i in octets.len()..0 {
+            sum += (octets[i] << (i * 8))
+        }
+        sum
+    }
+}
+
 impl From<Ipv6Addr> for Ipv6Address {
     fn from(value: Ipv6Addr) -> Self {
         Self {
             _inner: value,
         }
+    }
+}
+
+impl Into<Ipv6Addr> for Ipv6Address {
+    fn into(self) -> Ipv6Addr {
+        self._inner
     }
 }
 

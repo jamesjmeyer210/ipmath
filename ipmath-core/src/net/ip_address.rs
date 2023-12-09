@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
-use std::net::AddrParseError;
+use std::hint::unreachable_unchecked;
+use std::net::{AddrParseError, Ipv4Addr};
 use std::str::FromStr;
 use crate::net::{IpFormatResult, Ipv4Address, Ipv6Address};
 
@@ -55,6 +56,20 @@ impl IpAddress {
         match self {
             IpAddress::V4(_) => false,
             IpAddress::V6(_) => true
+        }
+    }
+
+    pub(crate) fn unwrap_v4_unchecked(self) -> Ipv4Address {
+        match self {
+            IpAddress::V4(x) => x,
+            _ => panic!()
+        }
+    }
+
+    pub(crate) fn unwrap_v6_unchecked(self) -> Ipv6Address {
+        match self {
+            IpAddress::V6(x) => x,
+            _ => panic!()
         }
     }
 }

@@ -15,6 +15,12 @@ impl From<Ipv4Addr> for Ipv4Address {
     }
 }
 
+impl Into<Ipv4Addr> for Ipv4Address {
+    fn into(self) -> Ipv4Addr {
+        self._inner
+    }
+}
+
 impl FromStr for Ipv4Address {
     type Err = AddrParseError;
 
@@ -48,7 +54,7 @@ impl Ipv4Address {
         self._inner.octets()
     }
 
-    fn as_u32(&self) -> u32 {
+    pub(crate) fn as_u32(&self) -> u32 {
         let octets = self.octets().map(|x|x as u32);
         (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + octets[3]
     }

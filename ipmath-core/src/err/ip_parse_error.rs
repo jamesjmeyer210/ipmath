@@ -2,13 +2,14 @@ use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::net::AddrParseError;
 use std::num::ParseIntError;
+use crate::net::IpFormat;
 
 #[derive(Debug)]
 pub enum IpParseError<'a>
 {
     ParseIntError(ParseIntError),
     AddrParseError(AddrParseError),
-    ParseStrError(&'a str)
+    ParseStrError(&'a str),
 }
 
 impl Display for IpParseError<'_> {
@@ -16,7 +17,7 @@ impl Display for IpParseError<'_> {
         match self {
             IpParseError::AddrParseError(e) => AddrParseError::fmt(e, f),
             IpParseError::ParseIntError(e) => ParseIntError::fmt(e, f),
-            IpParseError::ParseStrError(e) => str::fmt(e, f),
+            IpParseError::ParseStrError(e) => str::fmt(e, f)
         }
     }
 }

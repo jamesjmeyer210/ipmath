@@ -1,8 +1,6 @@
-use std::net::{AddrParseError, Ipv4Addr, Ipv6Addr};
-use std::num::ParseIntError;
-use crate::err::IpParseError;
-use crate::net::Ipv6Address;
+use std::fmt::{Display, Formatter};
 
+#[derive(Copy, Clone, Debug, PartialEq)]
 pub enum IpFormat {
     Ipv4Int,
     Ipv4Default,
@@ -11,7 +9,18 @@ pub enum IpFormat {
 }
 
 impl IpFormat {
-    pub(crate) fn detect(s: &str) -> Option<IpFormat> {
-        None
+    pub(crate) fn opposite(&self) -> IpFormat {
+        match self {
+            IpFormat::Ipv4Default => IpFormat::Ipv4Int,
+            IpFormat::Ipv4Int => IpFormat::Ipv4Default,
+            IpFormat::Ipv6Default => IpFormat::Ipv6Int,
+            IpFormat::Ipv6Int => IpFormat::Ipv6Default,
+        }
+    }
+}
+
+impl Display for IpFormat {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, stringify!(self))
     }
 }
