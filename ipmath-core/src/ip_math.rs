@@ -66,4 +66,21 @@ mod test {
             assert!(r.is_ok())
         }
     }
+
+    #[test]
+    fn convert_explicit_returns_err_for_invalid_conversion() {
+        let ips = vec![
+            ("127.255.101.1", IpFormat::Ipv4Default, IpFormat::Ipv6Default),
+            ("5001", IpFormat::Ipv4Int, IpFormat::Ipv6Int),
+            ("A345:0425:2CA1:0000:FF00:0567:5673:23B5", IpFormat::Ipv6Default, IpFormat::Ipv4Int),
+            ("1020304050607080900000000", IpFormat::Ipv6Int, IpFormat::Ipv4Default)
+        ];
+
+        for i in ips {
+            let r = IpMath::convert_explicit(i.0, i.1, i.2);
+            assert!(r.is_err());
+            let e = r.unwrap_err();
+            assert!(e.is_cannot_convert_error())
+        }
+    }
 }

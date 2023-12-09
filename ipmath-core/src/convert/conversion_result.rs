@@ -1,6 +1,7 @@
 use std::fmt::{Display, Formatter};
 use crate::net::{IpFormatResult};
 
+#[derive(Debug)]
 pub struct ConversionResult {
     _ip_format: IpFormatResult,
 }

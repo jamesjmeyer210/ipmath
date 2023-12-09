@@ -7,6 +7,22 @@ pub enum IpConversionError<'a> {
     CannotConvert(IpFormat, IpFormat),
 }
 
+impl <'a>IpConversionError<'a> {
+    pub fn is_parse_error(&self) -> bool {
+        match self {
+            Self::ParseError(_) => true,
+            Self::CannotConvert(_, _) => false,
+        }
+    }
+
+    pub fn is_cannot_convert_error(&self) -> bool {
+        match self {
+            Self::ParseError(_) => false,
+            Self::CannotConvert(_, _) => true,
+        }
+    }
+}
+
 impl <'a>From<IpParseError<'a>> for IpConversionError<'a> {
     fn from(value: IpParseError<'a>) -> Self {
         Self::ParseError(value)
