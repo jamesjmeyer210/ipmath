@@ -1,6 +1,6 @@
 use crate::convert::ConversionResult;
-use crate::err::{IpConversionError, IpParseError};
-use crate::net::{IpAddress, IpFormat, IpFormatResult};
+use crate::err::{IpConversionError};
+use crate::net::{IpFormat, IpFormatResult};
 
 pub struct IpMath;
 
@@ -14,19 +14,25 @@ impl IpMath {
         }
     }
 
+    /// Implicitly determines the variant of the `&str` `ip` and converts it to its opposite type
     fn convert_implicit_in_out(ip: &str) -> Result<ConversionResult,IpConversionError> {
         let ip_format = IpFormatResult::try_from(ip)?;
         let f_out = ip_format.get_ip_format().opposite();
-        todo!()
+        ip_format.try_convert(f_out)
+            .map(|x|x.into())
+            .map_err(|e|IpConversionError::from(e))
     }
 
     fn convert_implicit_in(ip: &str, f_in: IpFormat) -> Result<ConversionResult,IpConversionError> {
         Self::convert_explicit(ip, f_in, f_in.opposite())
     }
 
+    /// Implicitly determines the variant of the `&str` `ip` and converts it to the `f_out` type
     fn convert_implicit_out(ip: &str, f_out: IpFormat) -> Result<ConversionResult,IpConversionError> {
         let ip_format = IpFormatResult::try_from(ip)?;
-        todo!()
+        ip_format.try_convert(f_out)
+            .map(|x|x.into())
+            .map_err(|e|IpConversionError::from(e))
     }
 
     fn convert_explicit(ip: &str, f_in: IpFormat, f_out: IpFormat) -> Result<ConversionResult,IpConversionError> {
@@ -51,6 +57,21 @@ mod test {
     use std::collections::HashMap;
     use crate::net::IpFormat;
     use super::IpMath;
+
+    #[test]
+    fn convert_implicit_in_out_returns_ok(){
+        let ips = vec![
+            "227.255.1.1",
+            "850019",
+            "A345:425:2CA1:B000:FF00:0567:5673:23B5",
+            "1020304050607080900000809"
+        ];
+
+        for ip in ips {
+            let r = IpMath::convert_implicit_in_out(ip);
+            assert!(r.is_ok())
+        }
+    }
 
     #[test]
     fn convert_explicit_returns_ok_when_formats_match() {

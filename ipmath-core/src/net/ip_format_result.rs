@@ -57,6 +57,8 @@ impl IpFormatResult {
         }
     }
 
+    /// Attempts to convert an `IpFormatResult` to an `IpFormatResult` of a different variant based
+    /// on the `target` `IpFormat`.
     pub(crate) fn try_convert(self, target: IpFormat) -> Result<IpFormatResult,IpParseError<'static>> {
         if self.get_ip_format() == target {
             return Ok(self);
@@ -86,6 +88,7 @@ impl IpFormatResult {
         }
     }
 
+    /// Tries to convert a `&str` to an `IpFormatResult` based on the provided `IpFormat`
     pub(crate) fn try_from_format(f: IpFormat, s: &str) -> Result<IpFormatResult,IpParseError> {
         match f {
             IpFormat::Ipv4Default => IpFormatResult::try_as_ipv4_default(s),
