@@ -59,17 +59,17 @@ impl IpAddress {
         }
     }
 
-    pub(crate) fn unwrap_v4_unchecked(self) -> Ipv4Address {
+    pub(crate) fn unwrap_ipv4(self) -> Option<Ipv4Address> {
         match self {
-            IpAddress::V4(x) => x,
-            _ => panic!()
+            IpAddress::V4(x) => Some(x),
+            _ => None
         }
     }
 
-    pub(crate) fn unwrap_v6_unchecked(self) -> Ipv6Address {
+    pub(crate) fn unwrap_ipv6(self) -> Option<Ipv6Address> {
         match self {
-            IpAddress::V6(x) => x,
-            _ => panic!()
+            IpAddress::V6(x) => Some(x),
+            _ => None
         }
     }
 }

@@ -20,7 +20,6 @@ impl IpMath {
         let f_out = ip_format.get_ip_format().opposite();
         ip_format.try_convert(f_out)
             .map(|x|x.into())
-            .map_err(|e|IpConversionError::from(e))
     }
 
     fn convert_implicit_in(ip: &str, f_in: IpFormat) -> Result<ConversionResult,IpConversionError> {
@@ -32,7 +31,6 @@ impl IpMath {
         let ip_format = IpFormatResult::try_from(ip)?;
         ip_format.try_convert(f_out)
             .map(|x|x.into())
-            .map_err(|e|IpConversionError::from(e))
     }
 
     fn convert_explicit(ip: &str, f_in: IpFormat, f_out: IpFormat) -> Result<ConversionResult,IpConversionError> {
@@ -48,8 +46,7 @@ impl IpMath {
             (IpFormat::Ipv6Default, IpFormat::Ipv6Int) |
             (IpFormat::Ipv6Int, IpFormat::Ipv6Default) => IpFormatResult::try_from_format(f_in, ip)?
                 .try_convert(f_out)
-                .map(|x|x.into())
-                .map_err(|e|IpConversionError::from(e)),
+                .map(|x|x.into()),
             _ => Err(IpConversionError::CannotConvert(f_in, f_out))
         }
     }

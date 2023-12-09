@@ -1,7 +1,7 @@
 use std::fmt::{Display, Formatter};
 use std::net::{Ipv4Addr, Ipv6Addr};
 use crate::convert::ConversionResult;
-use crate::err::IpParseError;
+use crate::err::{IpConversionError, IpParseError};
 use crate::net::{IpAddress, IpFormat, Ipv4Address};
 
 #[derive(Debug)]
@@ -53,30 +53,35 @@ impl IpFormatResult {
 
     /// Attempts to convert an `IpFormatResult` to an `IpFormatResult` of a different variant based
     /// on the `target` `IpFormat`.
-    pub(crate) fn try_convert(self, target: IpFormat) -> Result<IpFormatResult,IpParseError<'static>> {
-        if self.get_ip_format() == target {
+    pub(crate) fn try_convert(self, target: IpFormat) -> Result<IpFormatResult,IpConversionError<'static>> {
+        let format = self.get_ip_format();
+        if format == target {
             return Ok(self);
         }
 
         match target {
             IpFormat::Ipv4Int=> {
-                let ip = IpAddress::from(self);
-                let ipv4 = ip.unwrap_v4_unchecked();
+                let ipv4 = IpAddress::from(self)
+                    .unwrap_ipv4()
+                    .ok_or(IpConversionError::CannotConvert(format, target))?;
                 Ok(IpFormatResult::Ipv4Int(ipv4.as_u32()))
             },
             IpFormat::Ipv4Default => {
-                let ip = IpAddress::from(self);
-                let ipv4 = ip.unwrap_v4_unchecked();
+                let ipv4 = IpAddress::from(self)
+                    .unwrap_ipv4()
+                    .ok_or(IpConversionError::CannotConvert(format, target))?;
                 Ok(IpFormatResult::Ipv4Default(ipv4.into()))
             }
             IpFormat::Ipv6Int => {
-                let ip = IpAddress::from(self);
-                let ipv6 = ip.unwrap_v6_unchecked();
+                let ipv6 = IpAddress::from(self)
+                    .unwrap_ipv6()
+                    .ok_or(IpConversionError::CannotConvert(format, target))?;
                 Ok(IpFormatResult::Ipv6Int(ipv6.as_u128()))
             },
             IpFormat::Ipv6Default => {
-                let ip = IpAddress::from(self);
-                let ipv6 = ip.unwrap_v6_unchecked();
+                let ipv6 = IpAddress::from(self)
+                    .unwrap_ipv6()
+                    .ok_or(IpConversionError::CannotConvert(format, target))?;
                 Ok(IpFormatResult::Ipv6Default(ipv6.into()))
             },
         }

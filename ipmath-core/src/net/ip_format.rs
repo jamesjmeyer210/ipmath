@@ -21,6 +21,6 @@ impl IpFormat {
 
 impl Display for IpFormat {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, stringify!(self))
+        write!(f, "{:?}", self)
     }
 }
