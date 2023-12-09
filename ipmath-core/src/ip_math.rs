@@ -43,10 +43,13 @@ impl IpMath {
         }
 
         match (f_in, f_out) {
-            (IpFormat::Ipv4Default, IpFormat::Ipv4Int) => todo!(),
-            (IpFormat::Ipv4Int, IpFormat::Ipv4Default) => todo!(),
-            (IpFormat::Ipv6Default, IpFormat::Ipv6Int) => todo!(),
-            (IpFormat::Ipv6Int, IpFormat::Ipv6Default) => todo!(),
+            (IpFormat::Ipv4Default, IpFormat::Ipv4Int) |
+            (IpFormat::Ipv4Int, IpFormat::Ipv4Default) |
+            (IpFormat::Ipv6Default, IpFormat::Ipv6Int) |
+            (IpFormat::Ipv6Int, IpFormat::Ipv6Default) => IpFormatResult::try_from_format(f_in, ip)?
+                .try_convert(f_out)
+                .map(|x|x.into())
+                .map_err(|e|IpConversionError::from(e)),
             _ => Err(IpConversionError::CannotConvert(f_in, f_out))
         }
     }

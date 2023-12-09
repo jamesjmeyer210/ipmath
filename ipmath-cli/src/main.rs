@@ -2,7 +2,8 @@ use std::path::PathBuf;
 use std::str::FromStr;
 use clap::{Parser};
 use ipmath_cli::Format;
-use ipmath_core::net::{IpAddress};
+use ipmath_core::IpMath;
+use ipmath_core::net::{IpAddress, IpFormat};
 
 #[derive(Parser)]
 #[clap(name = "ipmath", author = "James Meyer")]
@@ -21,13 +22,11 @@ fn main() {
     let cli = Cli::parse();
 
     if cli.convert.is_some() {
-        let c = cli.convert.unwrap();
-        let ip = IpAddress::from_str(&c);
-        if ip.is_err() {
-            println!("Failed to parse {c}");
+        let ip = cli.convert.unwrap();
+        let r = IpMath::convert(&ip, cli.format_in.map(|x|x.into()), cli.format_out.map(|x|x.into()));
+        match r {
+            Ok(x) => println!("{x}"),
+            Err(e) => println!("{e}")
         }
-
-        let ip = ip.unwrap();
-        println!("IP Address: {ip}")
     }
 }

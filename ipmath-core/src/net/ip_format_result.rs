@@ -23,12 +23,6 @@ impl Display for IpFormatResult {
     }
 }
 
-/*impl Into<ConversionResult> for IpFormatResult {
-    fn into(self) -> ConversionResult {
-        ConversionResult::from(self)
-    }
-}*/
-
 impl <'a>TryFrom<&'a str> for IpFormatResult {
     type Error = IpParseError<'a>;
 
