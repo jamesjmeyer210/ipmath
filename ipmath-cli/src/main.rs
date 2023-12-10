@@ -1,9 +1,7 @@
-use std::ops::Deref;
-use clap::{Arg, arg, value_parser};
+use clap::{Arg, value_parser};
 use clap::{Command};
 use ipmath_cli::Format;
 use ipmath_core::IpMath;
-use ipmath_core::net::IpFormat;
 
 fn main() {
 
