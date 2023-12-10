@@ -1,7 +1,9 @@
+use std::error::Error;
 use std::fmt::{Display, Formatter};
 use crate::err::IpParseError;
 use crate::net::IpFormat;
 
+#[derive(Debug)]
 pub enum IpConversionError<'a> {
     ParseError(IpParseError<'a>),
     CannotConvert(IpFormat, IpFormat),
@@ -38,4 +40,8 @@ impl Display for IpConversionError<'_> {
             }
         }
     }
+}
+
+impl Error for IpConversionError<'_> {
+
 }

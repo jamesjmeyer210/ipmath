@@ -1,30 +1,44 @@
-use std::path::PathBuf;
-use clap::{Parser};
+use clap::{Arg, value_parser};
+use clap::{Command};
 use ipmath_cli::Format;
 use ipmath_core::IpMath;
 
-#[derive(Parser)]
-#[clap(name = "ipmath", author = "James Meyer")]
-struct Cli {
-    #[arg(short, long, value_name = "IP ADDRESS")]
-    convert: Option<String>,
-    #[arg(long)]
-    format_in: Option<Format>,
-    #[arg(short, long, value_name = "FILE")]
-    out: Option<PathBuf>,
-    #[arg(long)]
-    format_out: Option<Format>,
-}
-
 fn main() {
-    let cli = Cli::parse();
 
-    if cli.convert.is_some() {
-        let ip = cli.convert.unwrap();
-        let r = IpMath::convert(&ip, cli.format_in.map(|x|x.into()), cli.format_out.map(|x|x.into()));
-        match r {
-            Ok(x) => println!("{x}"),
-            Err(e) => println!("{e}")
-        }
+    let cmd = Command::new("ipmath")
+        .author("James Meyer, jamesjmeyer@gmail.com")
+        .version("0.1.0")
+        .arg(Arg::new("IGNORE ERRORS")
+            .short('I')
+            .long("ignore-errors"))
+        .arg(Arg::new("OUTPUT FILE")
+            .short('o')
+            .long("output"))
+        .subcommand(Command::new("convert")
+            .args([
+                Arg::new("IP").required(true),
+                Arg::new("INPUT_FORMAT")
+                    .long("format-in")
+                    .value_parser(value_parser!(Format)),
+                Arg::new("OUTPUT_FORMAT")
+                    .long("format-out")
+                    .value_parser(value_parser!(Format))
+            ])
+        );
+
+    let matches = cmd.get_matches();
+    match matches.subcommand() {
+        Some(("convert", sub_matches)) => {
+            let ip = sub_matches.get_one::<String>("IP").unwrap();
+            let format_in = sub_matches.get_one::<Format>("INPUT_FORMAT").map(|x|x.to_owned().into());
+            let format_out = sub_matches.get_one::<Format>("OUTPUT_FORMAT").map(|x|x.to_owned().into());
+
+            let x = IpMath::convert(ip, format_in, format_out);
+            match x {
+                Ok(r) => println!("{}", r),
+                Err(e) => println!("{}", e)
+            }
+        },
+        _ => println!("No args")
     }
 }
