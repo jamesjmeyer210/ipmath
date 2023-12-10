@@ -1,7 +1,7 @@
 use clap::ValueEnum;
 use ipmath_core::net::IpFormat;
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 pub enum Format {
     Ipv4Int,
     Ipv4Default,
