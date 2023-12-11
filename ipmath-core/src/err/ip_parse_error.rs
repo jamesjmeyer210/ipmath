@@ -16,7 +16,9 @@ impl Display for IpParseError<'_> {
         match self {
             IpParseError::AddrParseError(e) => AddrParseError::fmt(e, f),
             IpParseError::ParseIntError(e) => ParseIntError::fmt(e, f),
-            IpParseError::ParseStrError(e) => str::fmt(e, f)
+            IpParseError::ParseStrError(e) => {
+                write!(f, "{e} cannot be parsed into an IP address")
+            }
         }
     }
 }

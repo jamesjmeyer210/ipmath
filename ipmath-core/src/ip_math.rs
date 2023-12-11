@@ -59,6 +59,13 @@ mod test {
     use super::IpMath;
 
     #[test]
+    fn convert_returns_error_when_input_is_not_ip_address()
+    {
+        let r = IpMath::convert("Hello World", None, None);
+        assert!(r.is_err());
+    }
+
+    #[test]
     fn convert_implicit_in_out_returns_ok(){
         let ips = vec![
             "227.255.1.1",
@@ -71,6 +78,12 @@ mod test {
             let r = IpMath::convert_implicit_in_out(ip);
             assert!(r.is_ok())
         }
+    }
+
+    #[test]
+    fn convert_implicit_in_out_returns_err() {
+        let r = IpMath::convert_implicit_in_out("999.999.999.999");
+        assert!(r.is_err())
     }
 
     #[test]
